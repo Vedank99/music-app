@@ -5,7 +5,7 @@ session_start();
 error_reporting(0);
 
 if(isset($_SESSION['user'])){
-  header("Location: profile.php");
+  header("Location: liked/favs.php");
 }
 
 if(isset($_POST['submit'])){
@@ -19,7 +19,7 @@ if(isset($_POST['submit'])){
     $row = mysqli_fetch_assoc($result);
     $_SESSION['user'] = $row['username'];
     $_SESSION['user_id'] = $row['usr_id'];
-    header("Location: profile.php");
+    header("Location: liked/favs.php");
   }else{
     echo "<scrpit>alert('Woops! Username or Password is Wrong.')</script>";
   }

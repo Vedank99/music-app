@@ -1,6 +1,6 @@
 <?php
 
-  include 'config.php';
+  include '../config.php';
   error_reporting(0);
 
   session_start();
@@ -8,8 +8,6 @@
   $output = '';
   $username = $_SESSION['user'];
   $usr_id = $_SESSION['user_id'];
-
-  echo 'User ID of '.$username.' is '.$usr_id.'';
 
   if(isset($_POST['albumBtn'])){
     $str = $_POST['searchAlbum'];
@@ -34,7 +32,7 @@
       $output .= '</form>';
 
     }else{
-      echo "str is ". $str ."Problem no row".mysqli_error($conn);
+      $output .= '<div>There are no albums with this name</div>';
     }
     unset($_POST['albumBtn']);
   }
@@ -46,7 +44,6 @@
       $output .="<div>You didn't select any albums.</div>";
     }else{
       $N = count($albumResults);
-      echo '<div>You selected'.$N.' album(s): <div>';
       for($i=0; $i < $N; $i++){
         $sql = "INSERT INTO user_albums (usr_id,alb_id)
                 VALUES ('$usr_id','$albumResults[$i]')";
@@ -74,7 +71,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<?php include('templates/header.php'); ?>
+<?php include('../templates/header.php'); ?>
     <div>
       <form method="POST">
         <input class="form-control me-2" name="searchAlbum" type="search" placeholder="Search" aria-label="Search">
@@ -87,5 +84,5 @@
         <button name="doneBtn" class="btn">Done</button>
       </div>
     </form>
-    <?php include('templates/footer.php'); ?>
+    <?php include('../templates/footer.php'); ?>
 </html>

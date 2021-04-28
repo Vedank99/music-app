@@ -6,7 +6,6 @@
   session_start();
 
   $usr_id = $_SESSION['user_id'];
-  echo 'User id is '.$usr_id.'';
   $alb_name = '';
 
   if(isset($_POST['addSongs'])){

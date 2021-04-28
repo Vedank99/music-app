@@ -1,9 +1,20 @@
 <?php
 
-  include 'config.php';
+  include '../config.php';
   error_reporting(0);
 
   session_start();
+
+  $liked = '../liked/favs.php';
+  $preferred = '../preferred/fav-genre.php';
+  $playlists = '../playlists/my-playlists.php';
+  $mySongs = '../uploads/my-songs.php';
+
+  $nav_pills = '';
+  $nav_pills .= '<a class="nav-item nav-link" href="'.$liked.'">Liked</a>
+              <a class="nav-item nav-link active" href="'.$preferred.'">Preferred</a>
+              <a class="nav-item nav-link" href="'.$playlists.'">Playlists</a>
+              <a class="nav-item nav-link" href="'.$mySongs.'">My uploads</a>';
 
   if (!isset($_SESSION['user'])) {
       header("Location: index.php");
@@ -75,8 +86,11 @@
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <?php include('templates/header-profile.php'); ?>
+  <?php include('../templates/header-profile.php'); ?>
+  <nav class="nav nav-pills nav-justified">
+    <?php print("$nav_pills")?>
+  </nav>
   <?php print("$gen_output")?>
   <?php print("$lang_output")?>
-  <?php include('templates/footer.php'); ?>
+  <?php include('../templates/footer.php'); ?>
 </html>

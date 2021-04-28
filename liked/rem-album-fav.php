@@ -1,6 +1,6 @@
 <?php
 
-  include 'config.php';
+  include '../config.php';
   error_reporting(0);
 
   session_start();
@@ -73,12 +73,12 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<?php include('templates/header.php'); ?>
+<?php include('../templates/header.php'); ?>
     <?php echo $output; ?>
     <form method="POST">
       <div class="input-group">
         <button name="doneBtn" class="btn">Done</button>
       </div>
     </form>
-    <?php include('templates/footer.php'); ?>
+    <?php include('../templates/footer.php'); ?>
 </html>

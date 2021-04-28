@@ -1,8 +1,19 @@
 <?php
 
   $parent = dirname( dirname(__FILE__) );
-  include 'config.php';
-  echo '\\'.$root;
+  include '../config.php';
+
+  $liked = '../liked/favs.php';
+  $preferred = '../preferred/fav-genre.php';
+  $playlists = '../playlists/my-playlists.php';
+  $mySongs = '../uploads/my-songs.php';
+
+  $nav_pills = '';
+  $nav_pills .= '<a class="nav-item nav-link active" href="'.$liked.'">Liked</a>
+              <a class="nav-item nav-link" href="'.$preferred.'">Preferred</a>
+              <a class="nav-item nav-link" href="'.$playlists.'">Playlists</a>
+              <a class="nav-item nav-link" href="'.$mySongs.'">My uploads</a>';
+
   error_reporting(0);
 
   session_start();
@@ -36,7 +47,7 @@
             $result = mysqli_query($conn,$sql);
             $row = mysqli_fetch_assoc($result);
             $songOutput .= '<div>
-                          <a href="song.php?sng_id='. $song_num .'">'.$row['song_nm'].'</a>
+                          <a href="'.$root.'/song.php?sng_id='. $song_num .'">'.$row['song_nm'].'</a>
                         </div>';
           }
 
@@ -58,7 +69,7 @@
               $result = mysqli_query($conn,$sql);
               $row = mysqli_fetch_assoc($result);
               $albumOutput .= '<div>
-                                <a href="album.php?alb_id='.$album_num.'">'.$row['alb_name'].'</a>
+                                <a href="'.$root.'/album.php?alb_id='.$album_num.'">'.$row['alb_name'].'</a>
                               </div>';
             }
 
@@ -86,7 +97,10 @@
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <?php include 'templates\header-profile.php'; ?>
+  <?php include '..\templates\header-profile.php'; ?>
+  <nav class="nav nav-pills nav-justified">
+    <?php print("$nav_pills")?>
+  </nav>
   <div>Favourite songs</div>
   <?php print("$songOutput")?>
   <form method="POST">
@@ -99,5 +113,5 @@
     <button name="addAlbums">Add albums</button>
     <button name="removeAlbums">Remove albums</button>
   </form>
-  <?php include('templates/footer.php'); ?>
+  <?php include('../templates/footer.php'); ?>
 </html>

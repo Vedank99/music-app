@@ -1,6 +1,6 @@
 <?php
 
-  include 'config.php';
+  include '../config.php';
   error_reporting(0);
 
   session_start();
@@ -21,7 +21,7 @@
         $songRow = mysqli_fetch_assoc($songResult);
 
         $genSongsOutput .= '<div>
-                              <a href="song.php?sng_id='. $song_num .'">'.$songRow['song_nm'].'</a>
+                              <a href="'.$root.'/song.php?sng_id='. $song_num .'">'.$songRow['song_nm'].'</a>
                             </div>';
       }
   }else{
@@ -33,7 +33,7 @@
 
 <!DOCTYPE html>
 <html>
-<?php include('templates/header.php'); ?>
+<?php include('../templates/header.php'); ?>
 <?php echo $genSongsOutput; ?>
-<?php include('templates/footer.php'); ?>
+<?php include('../templates/footer.php'); ?>
 </html>

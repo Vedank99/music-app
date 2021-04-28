@@ -1,19 +1,19 @@
 <?php
 
-  include 'config.php';
+  include '../config.php';
   error_reporting(0);
 
   session_start();
 
   $output = '';
-  $username = $_SESSION['user'];
-  $usr_id = $_SESSION['user_id'];
+  $ply_id = $_GET['ply_id'];
+  $ply_name = $_GET['ply_name'];
 
-  $sql = "SELECT * FROM user_songs WHERE usr_id='$usr_id'";
+  $sql = "SELECT * FROM ply_songs WHERE ply_id='$ply_id'";
   $result = mysqli_query($conn,$sql);
 
   if($result->num_rows > 0){
-    $output .= '<div>Check the songs you want to remove from favourites and press Remove.</div>';
+    $output .= '<div>Check the songs you want to remove and press Remove.</div>';
     $output .= '<form method="POST">';
     while ($row = mysqli_fetch_assoc($result)){
 
@@ -26,7 +26,7 @@
       $song_nm = $sngRow['song_nm'];
 
       $output .= '<div class="container bg-light">
-                    <input type="checkbox" name="favSongs[]" value="'.$sng_id.'" />
+                    <input type="checkbox" name="plySongs[]" value="'.$sng_id.'" />
                     <span>'.$song_nm.'</span>
                   </div>';
     }
@@ -40,23 +40,23 @@
 
   if(isset($_POST['songRemBtn'])){
 
-    $favSongs = $_POST['favSongs'];
-    if(empty($favSongs)){
+    $plySongs = $_POST['plySongs'];
+    if(empty($plySongs)){
       $output .="<div>You didn't select any songs.</div>";
     }else{
-      $N = count($favSongs);
+      $N = count($plySongs);
       echo '<div>You selected'.$N.' song(s): <div>';
       for($i=0; $i < $N; $i++){
-        $sql = "DELETE FROM user_songs WHERE sng_id='$favSongs[$i]'";
+        $sql = "DELETE FROM ply_songs WHERE sng_id='$plySongs[$i]'";
         $result = mysqli_query($conn,$sql);
         if(!$result){
           break;
         }
       }
       if(!$result){
-        $output .= '<div>Some error occured : '.mysqli_error($conn).'</div>';
+        $output .= '<div>Some error occured</div>';
       }else{
-        header('Location: rem-song-fav.php');
+        header('Location: rem-songs-playlist.php?ply_id='.$ply_id.'&ply_name='.$ply_name.'');
         exit();
       }
     }
@@ -64,7 +64,7 @@
   }
 
   if(isset($_POST['doneBtn'])){
-    header('Location: favs.php');
+    header('Location: playlist.php?ply_id='.$ply_id.'&ply_name='.$ply_name.'');
     exit();
   }
 
@@ -73,12 +73,12 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<?php include('templates/header.php'); ?>
+<?php include('../templates/header.php'); ?>
     <?php echo $output; ?>
     <form method="POST">
       <div class="input-group">
         <button name="doneBtn" class="btn">Done</button>
       </div>
     </form>
-    <?php include('templates/footer.php'); ?>
+    <?php include('../templates/footer.php'); ?>
 </html>

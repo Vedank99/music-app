@@ -9,8 +9,6 @@
   $alb_name = $_GET['alb_name'];
   $songNum = $_GET['song_num'];
 
-  echo 'User id is '.$usr_id.' and album name is '.$alb_name.' and number of songs are '.$songNum.'';
-
   $uplOutput = '';
   $uplOutput .= '<form method="POST">';
   for($i=0;$i<$songNum;$i++){
@@ -91,7 +89,7 @@
       }
 
       if($result){
-        header('Location: my-songs.php');
+        header('Location: uploads/my-songs.php');
         exit();
       }
 

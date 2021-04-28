@@ -1,24 +1,25 @@
 <?php
 
-  include 'config.php';
+  include '../config.php';
   error_reporting(0);
 
   session_start();
 
   $output = '';
-  $ply_id = $_GET['ply_id'];
-  $ply_name = $_GET['ply_name'];
+  $username = $_SESSION['user'];
+  $usr_id = $_SESSION['user_id'];
+
 
   if(isset($_POST['songBtn'])){
     $str = $_POST['searchSong'];
 
-    $sql = "SELECT * FROM songs WHERE song_nm='$str' AND sng_id NOT IN (SELECT sng_id FROM ply_songs WHERE ply_id='$ply_id')";
+    $sql = "SELECT * FROM songs WHERE song_nm='$str' AND sng_id NOT IN (SELECT sng_id FROM user_songs WHERE usr_id='$usr_id')";
     $result = mysqli_query($conn,$sql);
 
     if($result->num_rows > 0){
 
 
-      $output .= '<div>Check the songs which you want to add</div>';
+      $output .= '<div>Check the songs which you want to add to favourites</div>';
       $output .= '<form method="POST">';
       while ($row = mysqli_fetch_assoc($result)){
 
@@ -32,7 +33,7 @@
       $output .= '</form>';
 
     }else{
-      echo "str is ". $str ."Problem no row".mysqli_error($conn);
+      $output .= '<div>There are no songs with this name</div>';
     }
     unset($_POST['songBtn']);
   }
@@ -44,17 +45,16 @@
       $output .="<div>You didn't select any songs.</div>";
     }else{
       $N = count($songResults);
-      echo '<div>You selected'.$N.' song(s): <div>';
       for($i=0; $i < $N; $i++){
-        $sql = "INSERT INTO ply_songs (ply_id,sng_id)
-                VALUES ('$ply_id','$songResults[$i]')";
+        $sql = "INSERT INTO user_songs (usr_id,sng_id)
+                VALUES ('$usr_id','$songResults[$i]')";
         $result = mysqli_query($conn,$sql);
         if(!$result){
           break;
         }
       }
       if(!$result){
-        $output .= '<div>Some error occured</div>';
+        $output .= '<div>Some error occured '.mysqli_error($conn).'</div>';
       }else{
         $output .= '<div>Songs added successfully</div>';
       }
@@ -63,7 +63,7 @@
   }
 
   if(isset($_POST['doneBtn'])){
-    header('Location: playlist.php?ply_id='.$ply_id.'&ply_name='.$ply_name.'');
+    header('Location: favs.php');
     exit();
   }
 
@@ -72,7 +72,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<?php include('templates/header.php'); ?>
+<?php include('../templates/header.php'); ?>
     <div>
       <form method="POST">
         <input class="form-control me-2" name="searchSong" type="search" placeholder="Search" aria-label="Search">
@@ -85,5 +85,5 @@
         <button name="doneBtn" class="btn">Done</button>
       </div>
     </form>
-    <?php include('templates/footer.php'); ?>
+    <?php include('../templates/footer.php'); ?>
 </html>

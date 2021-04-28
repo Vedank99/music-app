@@ -5,7 +5,8 @@
   $pass = "ujhjIz1koIRu4jN";
   $database = "epiz_28481933_mms";*/
 
-  $root = basename(__DIR__);
+  $httpProtocol = !isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on' ? 'http' : 'https';
+  $root = $httpProtocol.'://'.$_SERVER['HTTP_HOST'].'/mms';
 
   $server = "localhost";
   $user = "root";

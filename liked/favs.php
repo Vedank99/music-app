@@ -4,9 +4,9 @@
   include '../config.php';
 
   $liked = '../liked/favs.php';
-  $preferred = '../preferred/fav-genre.php';
+  $preferred = '../preferred/preferred.php';
   $playlists = '../playlists/my-playlists.php';
-  $mySongs = '../uploads/my-songs.php';
+  $mySongs = '../uploads/my-uploads';
 
   $nav_pills = '';
   $nav_pills .= '<a class="nav-item nav-link active" href="'.$liked.'">Liked</a>

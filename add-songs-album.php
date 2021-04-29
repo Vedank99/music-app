@@ -89,7 +89,7 @@
       }
 
       if($result){
-        header('Location: uploads/my-songs.php');
+        header('Location: uploads/my-uploads.php');
         exit();
       }
 

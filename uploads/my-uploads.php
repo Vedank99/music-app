@@ -13,14 +13,15 @@
   $nav_pills = '';
   $nav_pills .= '<a class="nav-item nav-link" href="'.$liked.'">Liked</a>
               <a class="nav-item nav-link" href="'.$preferred.'">Preferred</a>
-              <a class="nav-item nav-link active" href="'.$playlists.'">Playlists</a>
-              <a class="nav-item nav-link" href="'.$mySongs.'">My uploads</a>';
+              <a class="nav-item nav-link" href="'.$playlists.'">Playlists</a>
+              <a class="nav-item nav-link active" href="'.$mySongs.'">My uploads</a>';
 
   if (!isset($_SESSION['user'])) {
       header("Location: index.php");
   }
 
-  $ply_output = '';
+  $songsOutput = '';
+  $albumsOutput = '';
   $username = $_SESSION['user'];
 
   $sql = "SELECT * FROM users WHERE username='$username'";
@@ -29,21 +30,35 @@
   if($result->num_rows > 0){
     $row = mysqli_fetch_assoc($result);
     $usr_id = $row['usr_id'];
-
-    $sql = "SELECT * FROM user_playlist WHERE usr_id='$usr_id'";
+    $sql = "SELECT * FROM songs WHERE usr_id='$usr_id'";
     $result = mysqli_query($conn,$sql);
 
       if($result->num_rows > 0){
           while ($row = mysqli_fetch_assoc($result)) {
-            $ply_output .= '<div>
-                          <a href="playlist.php?ply_id='.$row['ply_id'].'&ply_name="'.$row['ply_name'].'>'.$row['ply_name'].'</a>
+            $songsOutput .= '<div>
+                          <a href="'.$root.'/song.php?sng_id='. $row['sng_id'] .'">'.$row['song_nm'].'</a>
                         </div>';
           }
-
       }else{
-        $ply_output = '<div>No playlists created</div>';
-        $_SESSION['genres'] = [];
+        $songsOutput = '<div>No songs uploaded</div>';
       }
+
+      $sql = "SELECT * FROM albums WHERE usr_id='$usr_id'";
+      $result = mysqli_query($conn,$sql);
+
+      if($result->num_rows > 0){
+          while ($row = mysqli_fetch_assoc($result)) {
+            $alb_id = $row['alb_id'];
+            $alb_name = $row['alb_name'];
+            $albumsOutput .= '<div>
+                              <a href="'.$root.'/album.php?alb_id='.$alb_id.'&alb_name='.$alb_name.'">'.$alb_name.'</a>
+                            </div>';
+          }
+      }else{
+        $albumsOutput = '<div>No albums created</div>';
+      }
+
+
   }else{
     echo "Some error occured. Please go back.";
   }
@@ -56,7 +71,9 @@
   <nav class="nav nav-pills nav-justified">
     <?php print("$nav_pills")?>
   </nav>
-  <?php print("$ply_output")?>
-  <div><a href="create-playlist.php">Create playlist</a></div>
+  <div>My Songs</div>
+  <?php print("$songsOutput")?>
+  <div>My Albums</div>
+  <?php print("$albumsOutput")?>
   <?php include('../templates/footer.php'); ?>
 </html>
